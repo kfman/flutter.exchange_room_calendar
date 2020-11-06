@@ -7,8 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
 
 import 'models/room.dart';
+import 'models/appointment.dart';
 
-class _XmlMessages {
+class ExchangeRooms {
   static String getRoomsXml(String list) => '''
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope
@@ -41,9 +42,7 @@ class _XmlMessages {
   </soap:Body>
   </soap:Envelope>
   ''';
-}
 
-class ExchangeRooms {
   final ConnectionCredentials credentials;
 
   Map<String, String> get headers => {
@@ -56,11 +55,16 @@ class ExchangeRooms {
   Future<List<Room>> getRooms(String listAddress) async {
     var result = await http.post(this.credentials.serverUrl,
         headers: headers,
-        body: _XmlMessages.getRoomsXml(listAddress),
+        body: getRoomsXml(listAddress),
         encoding: Encoding.getByName('utf-8'));
 
     var xml = XmlDocument.parse(result.body);
     var rooms = xml.findAllElements('t:Room');
     return rooms.map((e) => Room.fromXml(e)).toList();
+  }
+
+  Future<List<Appointment>> getAppointments(String room) async {
+
+    return List<Appointment>();
   }
 }
