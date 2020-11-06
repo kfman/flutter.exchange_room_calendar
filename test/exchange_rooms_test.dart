@@ -27,4 +27,11 @@ void main() {
     appointments.map((e) => print(e.subject));
     expect(appointments.length, isNot(0));
   });
+
+  test('Getting appointments', ()async{
+    var appointments = await rooms.getAppointmentsByRoomName('aquarium',
+    count: 2, from: DateTime(2020,11,06), to: DateTime(2020,11,14));
+    appointments.map((e) => print(e.subject));
+    expect(appointments.length, 2);
+  });
 }

@@ -72,7 +72,7 @@ class ExchangeRooms {
   ''';
 
   static String getAppointmentsRequest(String id,
-      {int count = 5, DateTime from, DateTime to}) {
+      {int count, DateTime from, DateTime to}) {
     var fromString = from?.toIso8601String() ??
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
             .toIso8601String();
@@ -104,7 +104,7 @@ class ExchangeRooms {
           <t:FieldURI FieldURI="calendar:End" />
         </t:AdditionalProperties>
       </m:ItemShape>
-      <m:CalendarView MaxEntriesReturned="$count" StartDate="$fromString" EndDate="$toString" />
+      <m:CalendarView MaxEntriesReturned="${count ?? 5}" StartDate="$fromString" EndDate="$toString" />
       <m:ParentFolderIds>
         <t:FolderId Id="$id" />
       </m:ParentFolderIds>
@@ -146,14 +146,16 @@ class ExchangeRooms {
     return folderId;
   }
 
-  Future<List<Appointment>> getAppointments(String roomId) async {
-    var request = getAppointmentsRequest(roomId);
+  Future<List<Appointment>> getAppointments(String roomId,
+  {int count, DateTime from, DateTime to}) async {
+    var request = getAppointmentsRequest(roomId, count: count, from: from, to: to);
     var xml = await _postCommand(request);
     return Appointment.getAppointmentList(xml.findAllElements('t:Items').first);
   }
 
-  Future<List<Appointment>> getAppointmentsByRoomName(String roomName) async {
+  Future<List<Appointment>> getAppointmentsByRoomName(String roomName,
+      {int count, DateTime from, DateTime to}) async {
     var id = await getFolderId(roomName);
-    return await getAppointments(id);
+    return await getAppointments(id, count: count, from: from, to: to);
   }
 }
