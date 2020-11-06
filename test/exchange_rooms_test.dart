@@ -14,4 +14,17 @@ void main() {
       print(room.name);
     expect(roomList.length, 4);
   });
+
+  test('Getting folder id', () async {
+    var id = await rooms.getFolderId('aquarium');
+    print('Room id = $id');
+    expect(id, isNot(null));
+    expect(id, isNot(''));
+  });
+
+  test('Getting appointments', ()async{
+    var appointments = await rooms.getAppointmentsByRoomName('aquarium');
+    appointments.map((e) => print(e.subject));
+    expect(appointments.length, isNot(0));
+  });
 }
