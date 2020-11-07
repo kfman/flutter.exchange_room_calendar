@@ -1,14 +1,19 @@
 # exchange_rooms
 
-A new Flutter package project.
+A flutter package to get appointments from a room on Exchange Server 2010+.
 
-## Getting Started
+The package uses the EWS Api. To get the appointments use the following code:
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+```dart
+  final rooms = ExchangeRooms(
+    credentials: CConnectionCredentials(
+                        username: 'username',
+                        password: 'TopSecretExchangePassword',
+                        domain: 'domain.local',
+                        serverUrl: 'https://mail.domain.com/EWS/Exchange.asmx')
+  );
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+      var appointments = await rooms.getAppointmentsByRoomName('roomName',
+      count: 2, from: DateTime(2020,11,06), to: DateTime(2020,11,14));
+```
+

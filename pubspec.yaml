@@ -1,7 +1,6 @@
 name: exchange_rooms
-description: Gettint appointments from a room on Exchange Server 2010+
+description: Getting appointments from a room on Exchange Server 2010+
 version: 0.0.1
-author: Klaus Fischer<klaus.fischer@eloware.com>
 homepage: https://github.com/kfman/flutter.exchange_room_calendar
 
 environment:
