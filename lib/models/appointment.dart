@@ -8,7 +8,13 @@ class Appointment {
   DateTime end;
   String organizer;
 
-  Appointment();
+  Appointment(
+      {this.subject,
+      this.organizer,
+      this.start,
+      this.end,
+      this.id,
+      this.changeKey});
 
   Appointment.fromXml(XmlElement element) {
     id = element.getElement('t:ItemId').getAttribute('Id');
