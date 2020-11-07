@@ -6,7 +6,7 @@ The package uses the EWS Api. To get the appointments use the following code:
 
 ```dart
   final rooms = ExchangeRooms(
-    credentials: CConnectionCredentials(
+    credentials: ConnectionCredentials(
                         username: 'username',
                         password: 'TopSecretExchangePassword',
                         domain: 'domain.local',
