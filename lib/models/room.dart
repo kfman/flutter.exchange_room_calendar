@@ -1,5 +1,6 @@
 import 'package:xml/xml.dart';
 
+/// Represents a [Room] on an exchange server
 class Room {
   String name;
   String emailAddress;
