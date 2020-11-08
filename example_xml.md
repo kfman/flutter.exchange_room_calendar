@@ -2,7 +2,7 @@
 
 
 ## Get room lists
-
+### Request
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -14,7 +14,7 @@
  </soap:Body>
 </soap:Envelope>
 ```
-
+### Response
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <s:Envelope
@@ -48,6 +48,7 @@
 
 ## Get rooms by list
 
+### Request
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope
@@ -69,6 +70,7 @@
 	</soap:Envelope>
 ```
 
+### Response
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <s:Envelope
@@ -128,6 +130,7 @@
 
 ## Get Folder by email address
 
+### Request
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope
@@ -156,6 +159,7 @@
 </soap:Envelope>
 ```
 
+### Response
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <s:Envelope
@@ -195,7 +199,7 @@
 
 [CalenderItem](https://docs.microsoft.com/de-de/exchange/client-developer/web-service-reference/calendaritem)
 
-
+### Request
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope 
@@ -226,6 +230,7 @@
   </soap:Body></soap:Envelope>
 ```
 
+### Response
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <s:Envelope
