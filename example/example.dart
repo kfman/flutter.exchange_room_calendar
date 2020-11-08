@@ -16,7 +16,7 @@ class Example extends StatelessWidget {
                     username: 'administrator',
                     password: 'MyStrongPassword',
                     domain: 'domain.local',
-                    serverUrl: 'http://mail.domain.com/EWS/Exchange.asmx'))
+                    serverUrl: 'https://mail.domain.com/EWS/Exchange.asmx'))
             .getAppointmentsByRoomName('room'),
         builder: (context, snapshot) {
           if (snapshot.hasData &&
