@@ -31,18 +31,6 @@ class ExchangeRooms {
 	</soap:Envelope>  
   ''';
 
-  static String _getRoomListsXml() => '''
-  <?xml version="1.0" encoding="utf-8"?>
-  <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Header>
-  <t:RequestServerVersion Version="Exchange2010" xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" />
-  </soap:Header>
-  <soap:Body>
-  <m:GetRoomLists xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages" />
-  </soap:Body>
-  </soap:Envelope>
-  ''';
-
   static String _getRoomIdRequestXml(String roomMail) => '''
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope
@@ -123,7 +111,9 @@ class ExchangeRooms {
 
   Future<XmlDocument> _postCommand(String command) async {
     var result = await http.post(this.credentials.serverUrl,
-        headers: _headers, body: command, encoding: Encoding.getByName('utf-8'));
+        headers: _headers,
+        body: command,
+        encoding: Encoding.getByName('utf-8'));
 
     if (result.statusCode >= 200 && result.statusCode < 300)
       return XmlDocument.parse(result.body);
