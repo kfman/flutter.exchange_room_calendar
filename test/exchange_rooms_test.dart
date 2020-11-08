@@ -8,10 +8,9 @@ void main() {
     credentials: Secret.credentials,
   );
 
-  test('Getting rooms', ()async{
+  test('Getting rooms', () async {
     var roomList = await rooms.getRooms('Besprechungsraeume@elotec-fischer.de');
-    for(var room in roomList)
-      print(room.name);
+    for (var room in roomList) print(room.name);
     expect(roomList.length, 4);
   });
 
@@ -22,15 +21,15 @@ void main() {
     expect(id, isNot(''));
   });
 
-  test('Getting appointments', ()async{
+  test('Getting appointments', () async {
     var appointments = await rooms.getAppointmentsByRoomName('aquarium');
     appointments.map((e) => print(e.subject));
     expect(appointments.length, isNot(0));
   });
 
-  test('Getting appointments', ()async{
+  test('Getting appointments', () async {
     var appointments = await rooms.getAppointmentsByRoomName('aquarium',
-    count: 2, from: DateTime(2020,11,06), to: DateTime(2020,11,14));
+        count: 2, from: DateTime(2020, 11, 06), to: DateTime(2020, 11, 14));
     appointments.map((e) => print(e.subject));
     expect(appointments.length, 2);
   });

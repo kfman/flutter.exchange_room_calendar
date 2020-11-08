@@ -1,12 +1,23 @@
 import 'package:xml/xml.dart';
 
-/// Representing [Appointment] in an Exchange calendar
+/// An [Appointment] from an exchange calendar
 class Appointment {
+  /// [id] is used internally in exchange, value is stored for future features
   String id;
+
+  /// [changeKey] is used internally in exchange, value is stored for future features
   String changeKey;
+
+  /// The [subject] of the appointment
   String subject;
+
+  /// [start] time of the appointment
   DateTime start;
+
+  /// [end] time of the appointment
   DateTime end;
+
+  /// Name of the [organizer]
   String organizer;
 
   Appointment(
