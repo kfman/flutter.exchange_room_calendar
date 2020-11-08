@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+/// Credentials to access the Exchange server
 class ConnectionCredentials {
   final String username;
   final String password;

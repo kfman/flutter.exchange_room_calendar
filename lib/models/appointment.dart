@@ -1,5 +1,6 @@
 import 'package:xml/xml.dart';
 
+/// Representing [Appointment] in an Exchange calendar
 class Appointment {
   String id;
   String changeKey;

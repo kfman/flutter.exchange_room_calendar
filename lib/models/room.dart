@@ -1,5 +1,6 @@
 import 'package:xml/xml.dart';
 
+/// [Room] or resource on an Exchange server
 class Room {
   String name;
   String emailAddress;
