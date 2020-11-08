@@ -2,6 +2,8 @@
 
 A flutter package to get appointments from a room on Exchange Server 2010+.
 
+### Example
+
 The package uses the EWS Api. To get the appointments use the following code:
 
 ```dart

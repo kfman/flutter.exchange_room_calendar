@@ -1,5 +1,6 @@
 name: exchange_rooms
-description: Getting appointments from a room on Exchange Server 2010+
+description: Getting appointments from a room on Exchange Server 2010+ using the EWS API.
+Simply use the email address of the room an get an array of appointments
 version: 0.0.1
 homepage: https://github.com/kfman/flutter.exchange_room_calendar
 

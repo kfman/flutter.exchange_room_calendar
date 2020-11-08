@@ -131,6 +131,7 @@ class ExchangeRooms {
     throw 'Communication error ${result.statusCode}';
   }
 
+  /// Returns a List<Room> grouped by [listAddress]
   Future<List<Room>> getRooms(String listAddress) async {
     var xml = await _postCommand(getRoomsXml(listAddress));
 
@@ -138,6 +139,9 @@ class ExchangeRooms {
     return rooms.map((e) => Room.fromXml(e)).toList();
   }
 
+  /// Returns the folder id for the calendar of [roomName]
+  ///
+  /// The __domain__ is automatically added
   Future<String> getFolderId(String roomName) async {
     var xml =
         await _postCommand(getRoomIdRequest('$roomName@${credentials.domain}'));
@@ -146,13 +150,20 @@ class ExchangeRooms {
     return folderId;
   }
 
+  /// [roomId] is the FolderID
+  ///
+  /// Returns max [count] appointments between [from] and [to]
   Future<List<Appointment>> getAppointments(String roomId,
-  {int count, DateTime from, DateTime to}) async {
-    var request = getAppointmentsRequest(roomId, count: count, from: from, to: to);
+      {int count, DateTime from, DateTime to}) async {
+    var request =
+        getAppointmentsRequest(roomId, count: count, from: from, to: to);
     var xml = await _postCommand(request);
     return Appointment.getAppointmentList(xml.findAllElements('t:Items').first);
   }
 
+  /// Returns max [count] appointments from the [roomName] between [from] and [to].
+  ///
+  /// The __domain__ is automatically added
   Future<List<Appointment>> getAppointmentsByRoomName(String roomName,
       {int count, DateTime from, DateTime to}) async {
     var id = await getFolderId(roomName);

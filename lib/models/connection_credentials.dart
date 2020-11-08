@@ -9,6 +9,9 @@ class ConnectionCredentials {
   String get authorization =>
       'Basic ' + base64Encode(utf8.encode('$username@$domain:$password'));
 
+  /// [username] with access to the rooms calendar and its [password]
+  /// using the [domain] e.d. __mydomain.local__ on the server
+  /// with the [serverUrl] ending on __/EWS/Exchange.asmx__
   ConnectionCredentials(
       {this.username, this.password, this.domain, this.serverUrl});
 }
