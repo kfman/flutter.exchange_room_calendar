@@ -10,7 +10,7 @@ import 'models/appointment.dart';
 import 'models/room.dart';
 
 class ExchangeRooms {
-  static String getRoomsXml(String list) => '''
+  static String _getRoomsXml(String list) => '''
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -31,7 +31,7 @@ class ExchangeRooms {
 	</soap:Envelope>  
   ''';
 
-  static String getRoomLists() => '''
+  static String _getRoomListsXml() => '''
   <?xml version="1.0" encoding="utf-8"?>
   <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Header>
@@ -43,7 +43,7 @@ class ExchangeRooms {
   </soap:Envelope>
   ''';
 
-  static String getRoomIdRequest(String roomMail) => '''
+  static String _getRoomIdRequestXml(String roomMail) => '''
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -71,7 +71,7 @@ class ExchangeRooms {
 </soap:Envelope>
   ''';
 
-  static String getAppointmentsRequest(String id,
+  static String _getAppointmentsRequestXml(String id,
       {int count, DateTime from, DateTime to}) {
     var fromString = from?.toIso8601String() ??
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -114,7 +114,7 @@ class ExchangeRooms {
 
   final ConnectionCredentials credentials;
 
-  Map<String, String> get headers => {
+  Map<String, String> get _headers => {
         'Content-Type': 'text/xml; charset=utf-8',
         'Authorization': credentials.authorization
       };
@@ -123,7 +123,7 @@ class ExchangeRooms {
 
   Future<XmlDocument> _postCommand(String command) async {
     var result = await http.post(this.credentials.serverUrl,
-        headers: headers, body: command, encoding: Encoding.getByName('utf-8'));
+        headers: _headers, body: command, encoding: Encoding.getByName('utf-8'));
 
     if (result.statusCode >= 200 && result.statusCode < 300)
       return XmlDocument.parse(result.body);
@@ -133,7 +133,7 @@ class ExchangeRooms {
 
   /// Returns a List<Room> grouped by [listAddress]
   Future<List<Room>> getRooms(String listAddress) async {
-    var xml = await _postCommand(getRoomsXml(listAddress));
+    var xml = await _postCommand(_getRoomsXml(listAddress));
 
     var rooms = xml.findAllElements('t:Room');
     return rooms.map((e) => Room.fromXml(e)).toList();
@@ -143,8 +143,8 @@ class ExchangeRooms {
   ///
   /// The __domain__ is automatically added
   Future<String> getFolderId(String roomName) async {
-    var xml =
-        await _postCommand(getRoomIdRequest('$roomName@${credentials.domain}'));
+    var xml = await _postCommand(
+        _getRoomIdRequestXml('$roomName@${credentials.domain}'));
 
     var folderId = xml.findAllElements('t:FolderId').first.getAttribute('Id');
     return folderId;
@@ -156,7 +156,7 @@ class ExchangeRooms {
   Future<List<Appointment>> getAppointments(String roomId,
       {int count, DateTime from, DateTime to}) async {
     var request =
-        getAppointmentsRequest(roomId, count: count, from: from, to: to);
+        _getAppointmentsRequestXml(roomId, count: count, from: from, to: to);
     var xml = await _postCommand(request);
     return Appointment.getAppointmentList(xml.findAllElements('t:Items').first);
   }

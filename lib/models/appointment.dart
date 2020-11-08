@@ -16,6 +16,7 @@ class Appointment {
       this.id,
       this.changeKey});
 
+  /// Extracts Appointment from an __t:CalendarItem__ XML [element]
   Appointment.fromXml(XmlElement element) {
     id = element.getElement('t:ItemId').getAttribute('Id');
     changeKey = element.getElement('t:ItemId').getAttribute('ChangeKey');
@@ -30,6 +31,7 @@ class Appointment {
         .text;
   }
 
+  /// Extracts list of Appointments from an __t:Items__ [element]
   static List<Appointment> getAppointmentList(XmlElement element) => element
       .findAllElements('t:CalendarItem')
       .map((e) => Appointment.fromXml(e))

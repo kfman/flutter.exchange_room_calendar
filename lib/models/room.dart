@@ -8,6 +8,7 @@ class Room {
 
   Room();
 
+  /// Extracts an Room from a XML [element]
   Room.fromXml(XmlElement element) {
     var innerElement = element.getElement('t:Id');
     name = innerElement.getElement('t:Name').text;
