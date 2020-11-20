@@ -2,10 +2,10 @@ import 'dart:convert';
 
 /// Credentials to access the Exchange server
 class ConnectionCredentials {
-  final String username;
-  final String password;
-  final String domain;
-  final String serverUrl;
+  final String? username;
+  final String? password;
+  final String? domain;
+  final String? serverUrl;
 
   String get authorization =>
       'Basic ' + base64Encode(utf8.encode('$username@$domain:$password'));

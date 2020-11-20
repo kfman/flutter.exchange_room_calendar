@@ -60,7 +60,7 @@ class ExchangeRooms {
   ''';
 
   static String _getAppointmentsRequestXml(String id,
-      {int count, DateTime from, DateTime to}) {
+      {int? count, DateTime? from, DateTime? to}) {
     var fromString = from?.toIso8601String() ??
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
             .toIso8601String();
@@ -100,20 +100,20 @@ class ExchangeRooms {
   </soap:Body></soap:Envelope>  ''';
   }
 
-  final ConnectionCredentials credentials;
+  final ConnectionCredentials? credentials;
 
   Map<String, String> get _headers => {
         'Content-Type': 'text/xml; charset=utf-8',
-        'Authorization': credentials.authorization
+        'Authorization': credentials!.authorization
       };
 
   ExchangeRooms({this.credentials});
 
   Future<XmlDocument> _postCommand(String command) async {
-    var result = await http.post(this.credentials.serverUrl,
+    var result = await http.post(this.credentials!.serverUrl,
         headers: _headers,
         body: command,
-        encoding: Encoding.getByName('utf-8'));
+        encoding: Encoding.getByName('utf-8')!);
 
     if (result.statusCode >= 200 && result.statusCode < 300)
       return XmlDocument.parse(result.body);
@@ -134,7 +134,7 @@ class ExchangeRooms {
   /// The __domain__ is automatically added
   Future<String> getFolderId(String roomName) async {
     var xml = await _postCommand(
-        _getRoomIdRequestXml('$roomName@${credentials.domain}'));
+        _getRoomIdRequestXml('$roomName@${credentials!.domain}'));
 
     var folderId = xml.findAllElements('t:FolderId').first.getAttribute('Id');
     return folderId;
@@ -144,7 +144,7 @@ class ExchangeRooms {
   ///
   /// Returns max [count] appointments between [from] and [to]
   Future<List<Appointment>> getAppointments(String roomId,
-      {int count, DateTime from, DateTime to}) async {
+      {int? count, DateTime? from, DateTime? to}) async {
     var request =
         _getAppointmentsRequestXml(roomId, count: count, from: from, to: to);
     var xml = await _postCommand(request);
@@ -155,7 +155,7 @@ class ExchangeRooms {
   ///
   /// The __domain__ is automatically added
   Future<List<Appointment>> getAppointmentsByRoomName(String roomName,
-      {int count, DateTime from, DateTime to}) async {
+      {int? count, DateTime? from, DateTime? to}) async {
     var id = await getFolderId(roomName);
     return await getAppointments(id, count: count, from: from, to: to);
   }

@@ -3,22 +3,22 @@ import 'package:xml/xml.dart';
 /// An [Appointment] from an exchange calendar
 class Appointment {
   /// [id] is used internally in exchange, value is stored for future features
-  String id;
+  String? id;
 
   /// [changeKey] is used internally in exchange, value is stored for future features
-  String changeKey;
+  String? changeKey;
 
   /// The [subject] of the appointment
-  String subject;
+  String? subject;
 
   /// [start] time of the appointment
-  DateTime start;
+  DateTime? start;
 
   /// [end] time of the appointment
-  DateTime end;
+  DateTime? end;
 
   /// Name of the [organizer]
-  String organizer;
+  String? organizer;
 
   Appointment(
       {this.subject,

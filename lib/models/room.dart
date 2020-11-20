@@ -2,10 +2,10 @@ import 'package:xml/xml.dart';
 
 /// [Room] or resource on an Exchange server
 class Room {
-  String name;
-  String emailAddress;
-  String routingType;
-  String mailboxType;
+  String? name;
+  String? emailAddress;
+  String? routingType;
+  String? mailboxType;
 
   Room();
 

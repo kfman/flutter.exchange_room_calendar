@@ -24,8 +24,8 @@ class Example extends StatelessWidget {
             return Column(
               children: (snapshot.data as List<Appointment>)
                   .map((e) => ListTile(
-                        title: Text(e.subject),
-                        subtitle: Text(e.organizer),
+                        title: Text(e.subject!),
+                        subtitle: Text(e.organizer!),
                       ))
                   .toList(),
             );
