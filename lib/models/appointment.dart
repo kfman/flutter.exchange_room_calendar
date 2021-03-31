@@ -30,17 +30,17 @@ class Appointment {
 
   /// Extracts Appointment from an __t:CalendarItem__ XML [element]
   Appointment.fromXml(XmlElement element) {
-    id = element.getElement('t:ItemId').getAttribute('Id');
-    changeKey = element.getElement('t:ItemId').getAttribute('ChangeKey');
+    id = element.getElement('t:ItemId')?.getAttribute('Id');
+    changeKey = element.getElement('t:ItemId')?.getAttribute('ChangeKey');
 
-    subject = element.getElement('t:Subject').text;
-    start = DateTime.parse(element.getElement('t:Start').text);
-    end = DateTime.parse(element.getElement('t:End').text);
+    subject = element.getElement('t:Subject')?.text;
+    start = DateTime.tryParse(element.getElement('t:Start')?.text ?? '');
+    end = DateTime.tryParse(element.getElement('t:End')?.text ?? '');
     organizer = element
         .getElement('t:Organizer')
-        .getElement('t:Mailbox')
-        .getElement('t:Name')
-        .text;
+        ?.getElement('t:Mailbox')
+        ?.getElement('t:Name')
+        ?.text;
   }
 
   /// Extracts list of Appointments from an __t:Items__ [element]

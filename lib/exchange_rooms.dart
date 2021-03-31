@@ -110,7 +110,10 @@ class ExchangeRooms {
   ExchangeRooms({this.credentials});
 
   Future<XmlDocument> _postCommand(String command) async {
-    var result = await http.post(this.credentials!.serverUrl,
+    if (credentials?.serverUrl == null) throw 'Credentials missing';
+
+    var url = this.credentials!.serverUrl!;
+    var result = await http.post(Uri.parse(url),
         headers: _headers,
         body: command,
         encoding: Encoding.getByName('utf-8')!);
@@ -132,7 +135,7 @@ class ExchangeRooms {
   /// Returns the folder id for the calendar of [roomName]
   ///
   /// The __domain__ is automatically added
-  Future<String> getFolderId(String roomName) async {
+  Future<String?> getFolderId(String roomName) async {
     var xml = await _postCommand(
         _getRoomIdRequestXml('$roomName@${credentials!.domain}'));
 
@@ -157,6 +160,7 @@ class ExchangeRooms {
   Future<List<Appointment>> getAppointmentsByRoomName(String roomName,
       {int? count, DateTime? from, DateTime? to}) async {
     var id = await getFolderId(roomName);
+    if (id == null) return List<Appointment>.empty(growable: false);
     return await getAppointments(id, count: count, from: from, to: to);
   }
 }
