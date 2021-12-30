@@ -59,11 +59,9 @@ class ExchangeRooms {
 </soap:Envelope>
   ''';
 
-  static String _getAppointmentsRequestXml(String id,
-      {int count, DateTime from, DateTime to}) {
+  static String _getAppointmentsRequestXml(String id, {int count, DateTime from, DateTime to}) {
     var fromString = from?.toIso8601String() ??
-        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
-            .toIso8601String();
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toIso8601String();
 
     var toString = to?.toIso8601String() ??
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -102,21 +100,16 @@ class ExchangeRooms {
 
   final ConnectionCredentials credentials;
 
-  Map<String, String> get _headers => {
-        'Content-Type': 'text/xml; charset=utf-8',
-        'Authorization': credentials.authorization
-      };
+  Map<String, String> get _headers =>
+      {'Content-Type': 'text/xml; charset=utf-8', 'Authorization': credentials.authorization};
 
   ExchangeRooms({this.credentials});
 
   Future<XmlDocument> _postCommand(String command) async {
-    var result = await http.post(this.credentials.serverUrl,
-        headers: _headers,
-        body: command,
-        encoding: Encoding.getByName('utf-8'));
+    var result = await http.post(Uri.parse(this.credentials.serverUrl),
+        headers: _headers, body: command, encoding: Encoding.getByName('utf-8'));
 
-    if (result.statusCode >= 200 && result.statusCode < 300)
-      return XmlDocument.parse(result.body);
+    if (result.statusCode >= 200 && result.statusCode < 300) return XmlDocument.parse(result.body);
 
     throw 'Communication error ${result.statusCode}';
   }
@@ -133,8 +126,7 @@ class ExchangeRooms {
   ///
   /// The __domain__ is automatically added
   Future<String> getFolderId(String roomName) async {
-    var xml = await _postCommand(
-        _getRoomIdRequestXml('$roomName@${credentials.domain}'));
+    var xml = await _postCommand(_getRoomIdRequestXml('$roomName@${credentials.domain}'));
 
     var folderId = xml.findAllElements('t:FolderId').first.getAttribute('Id');
     return folderId;
@@ -145,8 +137,7 @@ class ExchangeRooms {
   /// Returns max [count] appointments between [from] and [to]
   Future<List<Appointment>> getAppointments(String roomId,
       {int count, DateTime from, DateTime to}) async {
-    var request =
-        _getAppointmentsRequestXml(roomId, count: count, from: from, to: to);
+    var request = _getAppointmentsRequestXml(roomId, count: count, from: from, to: to);
     var xml = await _postCommand(request);
     return Appointment.getAppointmentList(xml.findAllElements('t:Items').first);
   }
