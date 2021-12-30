@@ -17,3 +17,7 @@ Experimenting with the documentation
 ## [0.0.5] - 2020-11-08
 
 Still experimenting with the documentation
+
+## [0.0.6] - 2021-12-20
+
+Updated to null safety
