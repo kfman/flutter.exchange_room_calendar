@@ -29,10 +29,11 @@ CURRENT=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
  fi
 
 # Git it
-git tag -a V$1 -m "Version $1"
 git add .
 git commit -m "Updated version, published"
 git push origin master
+git tag -a V$1 -m "Version $1"
+git push --tags
 
 # Upload
 flutter pub publish
