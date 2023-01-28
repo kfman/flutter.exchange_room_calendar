@@ -13,6 +13,8 @@ class Example extends StatelessWidget {
       body: FutureBuilder(
         future: ExchangeRooms(
                 credentials: ConnectionCredentials(
+                    appId: '9cb9c058-db06-4c29-b4f1-538f85adc0bb',
+                    tenantId: '5b37c041-2769-4b31-a08e-f298035b2a58',
                     username: 'administrator',
                     password: 'MyStrongPassword',
                     domain: 'domain.local',
