@@ -13,16 +13,16 @@ class ExchangeRooms {
   static String _getRoomsXml(String list) => '''
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-	xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+	xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+	xmlns:soap="https://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:t="https://schemas.microsoft.com/exchange/services/2006/types">
 	<soap:Header>
 		<t:RequestServerVersion Version="Exchange2010"
-			xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" />
+			xmlns:t="https://schemas.microsoft.com/exchange/services/2006/types" />
 		</soap:Header>
 		<soap:Body>
 			<m:GetRooms
-				xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages">
+				xmlns:m="https://schemas.microsoft.com/exchange/services/2006/messages">
 				<m:RoomList>
 					<t:EmailAddress>$list</t:EmailAddress>
 				</m:RoomList>
@@ -34,16 +34,16 @@ class ExchangeRooms {
   static String _getRoomIdRequestXml(String roomMail) => '''
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-	xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+	xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+	xmlns:soap="https://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:t="https://schemas.microsoft.com/exchange/services/2006/types">
 	<soap:Header>
 		<t:RequestServerVersion Version="Exchange2010"
-			xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" />
+			xmlns:t="https://schemas.microsoft.com/exchange/services/2006/types" />
 		</soap:Header>
   <soap:Body>
-    <GetFolder xmlns="http://schemas.microsoft.com/exchange/services/2006/messages"
-               xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+    <GetFolder xmlns="https://schemas.microsoft.com/exchange/services/2006/messages"
+               xmlns:t="https://schemas.microsoft.com/exchange/services/2006/types">
       <FolderShape>
         <t:BaseShape>Default</t:BaseShape>
       </FolderShape>
@@ -59,7 +59,7 @@ class ExchangeRooms {
 </soap:Envelope>
   ''';
 
-  static String _getAppointmentsRequestXml(String id, {int count, DateTime from, DateTime to}) {
+  static String _getAppointmentsRequestXml(String? id, {int? count, DateTime? from, DateTime? to}) {
     var fromString = from?.toIso8601String() ??
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toIso8601String();
 
@@ -71,13 +71,13 @@ class ExchangeRooms {
     return '''
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"			
-  xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"
-  xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+	xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:soap="https://schemas.xmlsoap.org/soap/envelope/"			
+  xmlns:m="https://schemas.microsoft.com/exchange/services/2006/messages"
+  xmlns:t="https://schemas.microsoft.com/exchange/services/2006/types">
   <soap:Header>
 		<t:RequestServerVersion Version="Exchange2010"
-			xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" />
+			xmlns:t="https://schemas.microsoft.com/exchange/services/2006/types" />
   </soap:Header>
   <soap:Body>
     <m:FindItem Traversal="Shallow">
@@ -98,15 +98,15 @@ class ExchangeRooms {
   </soap:Body></soap:Envelope>  ''';
   }
 
-  final ConnectionCredentials credentials;
+  final ConnectionCredentials? credentials;
 
   Map<String, String> get _headers =>
-      {'Content-Type': 'text/xml; charset=utf-8', 'Authorization': credentials.authorization};
+      {'Content-Type': 'text/xml; charset=utf-8', 'Authorization': credentials!.authorization};
 
   ExchangeRooms({this.credentials});
 
   Future<XmlDocument> _postCommand(String command) async {
-    var result = await http.post(Uri.parse(this.credentials.serverUrl),
+    var result = await http.post(Uri.parse(this.credentials!.serverUrl!),
         headers: _headers, body: command, encoding: Encoding.getByName('utf-8'));
 
     if (result.statusCode >= 200 && result.statusCode < 300) return XmlDocument.parse(result.body);
@@ -125,8 +125,8 @@ class ExchangeRooms {
   /// Returns the folder id for the calendar of [roomName]
   ///
   /// The __domain__ is automatically added
-  Future<String> getFolderId(String roomName) async {
-    var xml = await _postCommand(_getRoomIdRequestXml('$roomName@${credentials.domain}'));
+  Future<String?> getFolderId(String roomName) async {
+    var xml = await _postCommand(_getRoomIdRequestXml('$roomName@${credentials!.domain}'));
 
     var folderId = xml.findAllElements('t:FolderId').first.getAttribute('Id');
     return folderId;
@@ -135,8 +135,8 @@ class ExchangeRooms {
   /// [roomId] is the FolderID
   ///
   /// Returns max [count] appointments between [from] and [to]
-  Future<List<Appointment>> getAppointments(String roomId,
-      {int count, DateTime from, DateTime to}) async {
+  Future<List<Appointment>> getAppointments(String? roomId,
+      {int? count, DateTime? from, DateTime? to}) async {
     var request = _getAppointmentsRequestXml(roomId, count: count, from: from, to: to);
     var xml = await _postCommand(request);
     return Appointment.getAppointmentList(xml.findAllElements('t:Items').first);
@@ -146,7 +146,7 @@ class ExchangeRooms {
   ///
   /// The __domain__ is automatically added
   Future<List<Appointment>> getAppointmentsByRoomName(String roomName,
-      {int count, DateTime from, DateTime to}) async {
+      {int? count, DateTime? from, DateTime? to}) async {
     var id = await getFolderId(roomName);
     return await getAppointments(id, count: count, from: from, to: to);
   }

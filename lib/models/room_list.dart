@@ -3,7 +3,7 @@ import 'package:xml/xml.dart';
 
 /// Could contain a list of Rooms, but is not implemented yet
 class RoomList extends Room {
-  List<Room> rooms = List<Room>();
+  List<Room> rooms = List<Room>.empty(growable: true);
 
   RoomList();
 

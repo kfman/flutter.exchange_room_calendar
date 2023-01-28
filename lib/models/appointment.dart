@@ -3,22 +3,22 @@ import 'package:xml/xml.dart';
 /// An [Appointment] from an exchange calendar
 class Appointment {
   /// [id] is used internally in exchange, value is stored for future features
-  String id;
+  String? id;
 
   /// [changeKey] is used internally in exchange, value is stored for future features
-  String changeKey;
+  String? changeKey;
 
   /// The [subject] of the appointment
-  String subject;
+  String? subject;
 
   /// [start] time of the appointment
-  DateTime start;
+  DateTime? start;
 
   /// [end] time of the appointment
-  DateTime end;
+  DateTime? end;
 
   /// Name of the [organizer]
-  String organizer;
+  String? organizer;
 
   Appointment(
       {this.subject,
@@ -30,16 +30,16 @@ class Appointment {
 
   /// Extracts Appointment from an __t:CalendarItem__ XML [element]
   Appointment.fromXml(XmlElement element) {
-    id = element.getElement('t:ItemId').getAttribute('Id');
-    changeKey = element.getElement('t:ItemId').getAttribute('ChangeKey');
+    id = element.getElement('t:ItemId')!.getAttribute('Id');
+    changeKey = element.getElement('t:ItemId')!.getAttribute('ChangeKey');
 
-    subject = element.getElement('t:Subject').text;
-    start = DateTime.parse(element.getElement('t:Start').text);
-    end = DateTime.parse(element.getElement('t:End').text);
+    subject = element.getElement('t:Subject')!.text;
+    start = DateTime.parse(element.getElement('t:Start')!.text);
+    end = DateTime.parse(element.getElement('t:End')!.text);
     organizer = element
-        .getElement('t:Organizer')
-        .getElement('t:Mailbox')
-        .getElement('t:Name')
+        .getElement('t:Organizer')!
+        .getElement('t:Mailbox')!
+        .getElement('t:Name')!
         .text;
   }
 

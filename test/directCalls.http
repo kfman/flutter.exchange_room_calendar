@@ -1,0 +1,30 @@
+### GET Room data
+GET https://outlook.office365.com/EWS/Exchange.asmx
+Content-Type: text/xml; charset=utf-8
+Authorization: Basic {{credentials}}
+
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:soap="https://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:t="https://schemas.microsoft.com/exchange/services/2006/types">
+	<soap:Header>
+		<t:RequestServerVersion Version="Exchange2010"
+			xmlns:t="https://schemas.microsoft.com/exchange/services/2006/types" />
+		</soap:Header>
+  <soap:Body>
+    <GetFolder xmlns="https://schemas.microsoft.com/exchange/services/2006/messages"
+               xmlns:t="https://schemas.microsoft.com/exchange/services/2006/types">
+      <FolderShape>
+        <t:BaseShape>Default</t:BaseShape>
+      </FolderShape>
+      <FolderIds>
+        <t:DistinguishedFolderId Id="calendar">
+				<t:Mailbox>
+					<t:EmailAddress>{{roomName}}</t:EmailAddress>
+						</t:Mailbox>
+				</t:DistinguishedFolderId>
+      </FolderIds>
+    </GetFolder>
+  </soap:Body>
+</soap:Envelope>
